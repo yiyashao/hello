@@ -44,7 +44,7 @@ public class TC903UserEntry extends TestHelper {
 	String phone = "13475942549";
 	String address = "中国大连高新园区龙头分园盛龙街1号"; 
 	String comments = "85平米";
-	int batchAddNum = 10;
+	int batchAddNum = 15;
 	
 	public WebDriver driver;
 	String exePath = "C:\\Users\\david\\Downloads\\chromedriver_win32\\chromedriver.exe";
