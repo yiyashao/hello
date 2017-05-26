@@ -1,6 +1,9 @@
 package TechoSoft.TEST;
 
 import org.testng.annotations.Test;
+
+import TechoSoft.Helper.TestHelper;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -20,10 +23,10 @@ import org.testng.annotations.AfterClass;
  * For TC: http://104.129.56.123:8080/browse/TC-14
  * 
  */
-public class TC901AdminLogin {
+public class TC901AdminLogin extends TestHelper{
 	
 	//TEST DETAIL
-	String TestURL = "http://175.170.130.20:9107/EworkForTreat/Login"; 
+	String TestURL = BASE_URL + "EworkForTreat/Login"; 
 	String exePath = "C:\\Users\\david\\Downloads\\chromedriver_win32\\chromedriver.exe";
 	String testCaseId = "TC-14";
 	//TEST DATA BELOW
@@ -42,7 +45,7 @@ public class TC901AdminLogin {
 	public void Step01() {
 		
 		driver.findElement(By.xpath("//input[@value='登录']")).click();
-		checkAlertMessage(errorMessage);
+		checkAlertMessage(driver, errorMessage);
 	}
 	/*
 	 * fill user name & empty password, then click login, return error message
@@ -52,7 +55,7 @@ public class TC901AdminLogin {
 		WebElement element = driver.findElement(By.name("txtUserName"));
 		element.sendKeys(wrongUser);
 		driver.findElement(By.xpath("//input[@value='登录']")).click();
-		checkAlertMessage(errorMessage);
+		checkAlertMessage(driver, errorMessage);
 	}
 	/*
 	 * wrong user name / password login, then click login, return error message
@@ -64,7 +67,7 @@ public class TC901AdminLogin {
 		element = driver.findElement(By.name("txtUserPass"));
 		element.sendKeys(wrongPsw);
 		driver.findElement(By.xpath("//input[@value='登录']")).click();
-		checkAlertMessage(errorMessage);
+		checkAlertMessage(driver, errorMessage);
 	}
 	/*
 	 * correct user name /password login, return error message
@@ -111,29 +114,29 @@ public class TC901AdminLogin {
 	  System.out.println("Finish Testing TC: " + testCaseId);
   }
   
-  public void checkAlertMessage(String alertMessage){
-	//wait for alert
-			WebDriverWait wait = new WebDriverWait(driver, 5); 
-			try {
-				wait.until(ExpectedConditions.alertIsPresent());
-				Alert alert = driver.switchTo().alert();
-				String s = alert.getText();
-				
-				assertEquals(s, alertMessage);
-				System.out.println("ALERT ERROR Message: " + s);
-				alert.accept();
-			} catch (Exception e) {
-				System.out.println("didnt see the alert!");
-			}
-  }
-  
-  public void mySleep(){
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-  }
+//  public void checkAlertMessage(String alertMessage){
+//	//wait for alert
+//			WebDriverWait wait = new WebDriverWait(driver, 5); 
+//			try {
+//				wait.until(ExpectedConditions.alertIsPresent());
+//				Alert alert = driver.switchTo().alert();
+//				String s = alert.getText();
+//				
+//				assertEquals(s, alertMessage);
+//				System.out.println("ALERT ERROR Message: " + s);
+//				alert.accept();
+//			} catch (Exception e) {
+//				System.out.println("didnt see the alert!");
+//			}
+//  }
+//  
+//  public void mySleep(){
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//  }
 
 }

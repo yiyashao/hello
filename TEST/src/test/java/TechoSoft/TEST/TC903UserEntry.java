@@ -27,21 +27,20 @@ import org.testng.annotations.AfterClass;
 public class TC903UserEntry extends TestHelper {
 	
 	//TEST DETAIL
-	String TestURL = "http://175.170.130.20:9107/EworkForTreat/InsertTreatUserInfo";
+	String TestURL = BASE_URL + "EworkForTreat/InsertTreatUserInfo";
 	String testCaseId = "TC-16";
 	//TEST DATA BELOW
 	String wrongUser = "wronguser";
 	String wrongPsw = "wrongpassword";
-	String correctUser = "admin";
-	String correctPsw = "admin";
+
 	String errorMessage_emptyUser = "客户姓名不能为空!";
 	String errorMessage_emptyPhone = "号码不能为空";
 	String errorMessage_emptyAddress = "地址不能为空!";
 	String errorMessage_wrongPhone = "号码有误";
 	String errorMessage_userExist = "已经存在此用户";
-	String alertMessage_userAdded = "添加成功";
-	String name = "加拿大李四";
-	String phone = "13475942549";
+
+	String name = data_key_clientName;
+	String phone = "13475942599";
 	String address = "中国大连高新园区龙头分园盛龙街1号"; 
 	String comments = "85平米";
 	int batchAddNum = 15;
@@ -77,7 +76,7 @@ public class TC903UserEntry extends TestHelper {
 	 */
 	@Test(enabled = true)
 	public void Step02() {
-		//assertEquals(driver.getTitle(), "客户录入");
+		assertEquals(driver.getTitle(), "录入界面");
 		field_name = driver.findElement(By.name("ework_username"));
 		field_phone = driver.findElement(By.name("user_phone"));
 		field_address = driver.findElement(By.name("user_address"));
@@ -113,7 +112,7 @@ public class TC903UserEntry extends TestHelper {
 	 */
 	@Test(enabled = true)
 	public void Step03() {		
-		//assertEquals(driver.getTitle(), "客户录入");
+		assertEquals(driver.getTitle(), "录入界面");
 		WebElement field_name = driver.findElement(By.name("ework_username"));
 		WebElement field_phone = driver.findElement(By.name("user_phone"));
 		WebElement field_address = driver.findElement(By.name("user_address"));
@@ -151,7 +150,7 @@ public class TC903UserEntry extends TestHelper {
 	@Test(enabled = true)
 	public void Step04() {		
 		String randPhoneNum = "";
-		//assertEquals(driver.getTitle(), "客户录入");
+		assertEquals(driver.getTitle(), "录入界面");
 		field_name = driver.findElement(By.name("ework_username"));
 		field_phone = driver.findElement(By.name("user_phone"));
 		field_address = driver.findElement(By.name("user_address"));
@@ -159,15 +158,23 @@ public class TC903UserEntry extends TestHelper {
 		WebElement submitButton = driver.findElement(By.id("button_submit"));
 		//correct input then use it to input again
 		randPhoneNum = generatePhoneNum();
+		name = generateUserName();
 		fillUserInfo(name, randPhoneNum, address, comments);
 		submitButton.click();
 		checkAlertMessage(driver, alertMessage_userAdded);	
+		//check if the fields are reset after successful submition of user info
+		assertEquals(field_name.getText(), "");
+		assertEquals(field_phone.getText(), "");
+		assertEquals(field_address.getText(), "");
+		assertEquals(field_comments.getText(), "");
+		//repeat the same user info
 		clearElements(field_name, field_phone, field_address, field_comments);
 		fillUserInfo(name, randPhoneNum, address, comments);
 		submitButton.click();
 		checkAlertMessage(driver, errorMessage_userExist);	
 		//now add some more users and check : 10 more for now.
 		for(int i = 0; i < batchAddNum; i ++){
+			name = generateUserName();
 			randPhoneNum = generatePhoneNum();
 			fillUserInfo(name, randPhoneNum, address, comments);
 			submitButton.click();
@@ -194,6 +201,8 @@ public class TC903UserEntry extends TestHelper {
 
   @AfterClass
   public void afterClass() {
+	  driver.close();
+	  System.out.println("Finish Testing TC: " + testCaseId);
   }
   
   public void clearElements(WebElement element1, WebElement element2, WebElement element3, WebElement element4){
